@@ -187,6 +187,16 @@
                 errorMessage.style.display = "block";
             }
         });
+        function loadBooking() {
+            // Dynamically load booking page content
+            fetch('booking.html')
+              .then(response => response.text())
+              .then(data => {
+                document.getElementById('content').innerHTML = data;
+              });
+          }
     </script>
+    <button onclick="loadBooking()">Go to Booking Page</button>
+    <div id="content"></div>
 </body>
 </html>

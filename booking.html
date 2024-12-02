@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printer Booking</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif; /* Use a clean, modern font */
+            background-image: url('background.jpg'); /* Ensure your background image path is correct */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333; /* General text color for contrast */
+        }
+    
+        .booking-container {
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.8), rgba(240, 240, 250, 0.8)); /* Subtle gradient */
+            padding: 30px 40px; /* More padding for a spacious look */
+            border-radius: 15px; /* Larger radius for a modern design */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+            width: 400px; /* Adjust width for better layout */
+            animation: slideIn 0.8s ease-in-out; /* Smooth animation on load */
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333; /* Label color */
+        }
+    
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px; /* More padding for larger input fields */
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px; /* Larger text for accessibility */
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+    
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007bff; /* Blue highlight on focus */
+            box-shadow: 0 0 6px rgba(0, 123, 255, 0.5); /* Subtle focus shadow */
+            outline: none;
+        }
+    
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: linear-gradient(to right, #007bff, #0056b3); /* Gradient button */
+            color: white;
+            font-size: 18px;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+    
+        .submit-button:hover {
+            background: linear-gradient(to right, #0056b3, #003d80);
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+    
+        .submit-button:active {
+            transform: scale(0.97); /* Slightly shrink on click */
+        }
+    
+        #timeForm, #printerForm {
+            display: none; /* Hidden by default */
+        }
+    
+        /* Logout Button Styling */
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #f44336, #d32f2f); /* Red gradient */
+            color: white;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+    
+        .logout-button:hover {
+            transform: scale(1.1); /* More prominent hover effect */
+            box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4); /* Enhanced hover shadow */
+        }
+    
+        .logout-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    
+        /* Add animation for the container */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .booking-container {
+                width: 90%;
+                padding: 20px;
+            }
+    
+            .logout-button {
+                top: 10px;
+                right: 10px;
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+    
+            .form-group input,
+            .form-group select {
+                font-size: 14px;
+                padding: 10px;
+            }
+    
+            .submit-button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h2 style="text-align:center;">3D Printer Booking</h2>
+        
+        <!-- Step 1: Select Date -->
+        <form id="dateForm">
+            <div class="form-group">
+                <label for="date">Select a Date:</label>
+                <input type="date" id="date" name="date" required>
+                <p id="formattedDate" style="margin-top: 10px; font-weight: bold;"></p>
+            </div>
+            <button type="submit" class="submit-button">Confirm Date</button>
+        </form>
+
+        <!-- Step 2: Select Start Time and End Time -->
+        <form id="timeForm">
+            <div class="form-group">
+                <label for="startTime">Select Start Time:</label>
+                <select id="startTime" name="startTime" required>
+                    <option value="Select Time">Select Time</option>
+                    <option value="00:00">12:00 AM</option>
+                    <option value="01:00">01:00 AM</option>
+                    <option value="02:00">02:00 AM</option>
+                    <option value="03:00">03:00 AM</option>
+                    <option value="04:00">04:00 AM</option>
+                    <option value="05:00">05:00 AM</option>
+                    <option value="06:00">06:00 AM</option>
+                    <option value="07:00">07:00 AM</option>
+                    <option value="08:00">08:00 AM</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="13:00">01:00 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                    <option value="18:00">06:00 PM</option>
+                    <option value="19:00">07:00 PM</option>
+                    <option value="20:00">08:00 PM</option>
+                    <option value="21:00">09:00 PM</option>
+                    <option value="22:00">10:00 PM</option>
+                    <option value="23:00">11:00 PM</option>
+                    <option value="23:59">11:59 PM</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="endTime">Select End Time:</label>
+                <select id="endTime" name="endTime" required>
+                    <!-- This will be dynamically populated -->
+                </select>
+            </div>
+            <button type="submit" class="submit-button">Confirm Time</button>
+        </form>
+
+        <!-- Step 3: Select Printer -->
+        <form id="printerForm">
+            <div class="form-group">
+                <label for="printer">Select Printer:</label>
+                <select id="printer" name="printer">
+                    <option value="Ender 3 Pro [1]">Ender 3 Pro [1]</option>
+                    <option value="Ender 3 Pro [2]">Ender 3 Pro [2]</option>
+                    <option value="Ender 3 V2 [1]">Ender 3 V2 [1]</option>
+                    <option value="Ender 3 V2 [2]">Ender 3 V2 [2]</option>
+                    <option value="Ender 3 V2 [3]">Ender 3 V2 [3]</option>
+                    <option value="Ender 3 V2 [4]">Ender 3 V2 [4]</option>
+                    <option value="Prusa i3 Mk3S [1]">Prusa i3 Mk3S [1]</option>
+                    <option value="Prusa i3 Mk3S [2]">Prusa i3 Mk3S [2]</option>
+                    <option value="Prusa i3 Mk3S [3]">Prusa i3 Mk3S [3]</option>
+                    <option value="Prusa i3 Mk3S [4]">Prusa i3 Mk3S [4]</option>
+                    <option value="Prusa i3 Mk3S [5]">Prusa i3 Mk3S [5]</option>
+                    <option value="Prusa i3 Mk3S [6]">Prusa i3 Mk3S [6]</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-button">Confirm Booking</button>
+        </form>
+    </div>
+
+    <script>
+        const dateForm = document.getElementById("dateForm");
+        const timeForm = document.getElementById("timeForm");
+        const printerForm = document.getElementById("printerForm");
+    
+        const dateInput = document.getElementById("date");
+        const startTimeSelect = document.getElementById("startTime");
+        const endTimeSelect = document.getElementById("endTime");
+        const printerSelect = document.getElementById("printer");
+    
+        // Google Apps Script Web App URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywWp1Rx5Z6zIZVoC49M1S39gWGu69nVO3USHNfMMbBDyN3r6R-QdsPhh_K111kISSKzw/exec";
+    
+        // Get the username from localStorage
+        const username = localStorage.getItem("username");
+        if (!username) {
+            alert("Username not found. Please log in again.");
+            window.location.href = "login.html"; // Redirect to login page if no username is found
+        }
+
+        // Function to convert date from yyyy-mm-dd to dd-mm-yyyy
+        function formatDateToDDMMYYYY(date) {
+            const [year, month, day] = date.split("-");
+            return `${day}-${month}-${year}`;
+        }
+
+        // Handle date selection
+        dateForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (dateInput.value) {
+                dateForm.style.display = "none";
+                timeForm.style.display = "block";
+            }
+        });
+    
+        // Populate end time dynamically based on start time
+        startTimeSelect.addEventListener("change", function () {
+            const selectedStartTimeIndex = startTimeSelect.selectedIndex;
+            endTimeSelect.innerHTML = ""; // Clear existing options
+    
+            for (let i = selectedStartTimeIndex + 1; i < startTimeSelect.options.length; i++) {
+                const option = document.createElement("option");
+                option.value = startTimeSelect.options[i].value;
+                option.textContent = startTimeSelect.options[i].textContent;
+                endTimeSelect.appendChild(option);
+            }
+    
+            if (endTimeSelect.options.length === 0) {
+                const placeholder = document.createElement("option");
+                placeholder.textContent = "No available times";
+                placeholder.disabled = true;
+                endTimeSelect.appendChild(placeholder);
+            }
+        });
+    
+        // Handle time selection
+        timeForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (startTimeSelect.value >= endTimeSelect.value) {
+                alert("End time must be later than start time.");
+                return;
+            }
+            timeForm.style.display = "none";
+            printerForm.style.display = "block";
+        });
+    
+        // Handle printer selection and submit booking
+        printerForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            if (!dateInput.value || !startTimeSelect.value || !endTimeSelect.value || !printerSelect.value) {
+                alert("Please fill in all fields before submitting.");
+                return;
+            }    
+        // Gather booking data
+        const formattedDate = formatDateToDDMMYYYY(dateInput.value); // Format date
+        const bookingData = {
+            username: username, // Include username
+            date: formattedDate, // Use the formatted date
+            startTime: startTimeSelect.value,
+            endTime: endTimeSelect.value,
+            printer: printerSelect.value,
+        };
+
+        // Log booking data for debugging
+        console.log("Booking Data Sent:", bookingData);
+
+        // Store booking data in localStorage
+        localStorage.setItem("bookingDetails", JSON.stringify(bookingData));
+
+        // Send booking data to Google Apps Script Web App
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                mode: "no-cors", // Add this line to bypass the CORS issue
+                body: JSON.stringify(bookingData),
+            });
+
+            alert("Booking successfully submitted!");
+            
+            // Redirect to confirmation page
+            window.location.href = "confirmation.html";
+        } catch (error) {
+            console.error("Error submitting booking:", error);
+            alert("An error occurred while submitting the booking.");
+        }
+        });
+
+        function logout() {
+            localStorage.removeItem("username");
+        }
+    </script>
+  <a href="login.html" class="logout-button">Log out</a>     
+</body>
+</html>

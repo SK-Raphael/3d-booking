@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif; /* Use a clean, modern font */
+            background-image: url('background.jpg'); /* Ensure your background image path is correct */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333; /* General text color for contrast */
+        }
+
+        .confirmation-container {
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.8), rgba(240, 240, 250, 0.8)); /* Subtle gradient */
+            padding: 30px 40px; /* More padding for a spacious look */
+            border-radius: 15px; /* Larger radius for a modern design */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+            width: 400px; /* Adjust width for better layout */
+            animation: slideIn 0.8s ease-in-out; /* Smooth animation on load */
+            text-align: center;
+        }
+
+        h1 {
+            color: #000000;
+            font-size: 24px;
+        }
+
+        .details {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Logout Button Styling */
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #f44336, #d32f2f); /* Red gradient */
+            color: white;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+    
+        .logout-button:hover {
+            transform: scale(1.1); /* More prominent hover effect */
+            box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4); /* Enhanced hover shadow */
+        }
+    
+        .logout-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="confirmation-container">
+        <h1>Booking Confirmed!</h1>
+        <div class="details" id="bookingDetails"></div>
+        <button class="back-button" onclick="goBack()">Back to Booking</button>
+    </div>
+
+    <script>
+        // Retrieve booking data from localStorage
+        const bookingData = JSON.parse(localStorage.getItem("bookingDetails"));
+
+        if (!bookingData) {
+            alert("No booking details found.");
+            window.location.href = "index.html"; // Redirect to main page if no data
+        } else {
+            // Display booking details
+            const detailsElement = document.getElementById("bookingDetails");
+            detailsElement.innerHTML = `
+                <p><strong>Username:</strong> ${bookingData.username}</p>
+                <p><strong>Date:</strong> ${bookingData.date}</p>
+                <p><strong>Start Time:</strong> ${bookingData.startTime}</p>
+                <p><strong>End Time:</strong> ${bookingData.endTime}</p>
+                <p><strong>Printer:</strong> ${bookingData.printer}</p>
+            `;
+        }
+
+        // Function to go back to the main booking page
+        function goBack() {
+            window.location.href = "booking.html";
+        }
+    </script>
+  <a href="login.html" class="logout-button">Log out</a>
+</body>
+</html>

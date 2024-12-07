@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printer Booking</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .booking-container {
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.8), rgba(240, 240, 250, 0.8));
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            animation: slideIn 0.8s ease-in-out;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-group select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: linear-gradient(to right, #007bff, #0056b3);
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+        .submit-button:hover {
+            background: linear-gradient(to right, #0056b3, #003d80);
+            transform: scale(1.05);
+        }
+        .submit-button:active {
+            transform: scale(0.97);
+        }
+        /* Logout Button Styling */
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #f44336, #d32f2f); /* Red gradient */
+            color: white;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+    
+        .logout-button:hover {
+            transform: scale(1.1); /* More prominent hover effect */
+            box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4); /* Enhanced hover shadow */
+        }
+    
+        .logout-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @media (max-width: 480px) {
+            .booking-container {
+                width: 90%;
+                padding: 20px;
+            }
+            .form-group select {
+                font-size: 14px;
+                padding: 10px;
+            }
+            .submit-button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h2 style="text-align:center;">3D Printer Booking</h2>
+        <!-- Step 3: Select Printer -->
+        <form id="printerForm">
+            <div class="form-group">
+                <label for="printer">Select Printer:</label>
+                <select id="printer" name="printer" required>
+                    <option value="Ender 3 Pro [1]">Ender 3 Pro [1]</option>
+                    <option value="Ender 3 Pro [2]">Ender 3 Pro [2]</option>
+                    <option value="Ender 3 V2 [1]">Ender 3 V2 [1]</option>
+                    <option value="Ender 3 V2 [2]">Ender 3 V2 [2]</option>
+                    <option value="Ender 3 V2 [3]">Ender 3 V2 [3]</option>
+                    <option value="Ender 3 V2 [4]">Ender 3 V2 [4]</option>
+                    <option value="Prusa i3 Mk3S [1]">Prusa i3 Mk3S [1]</option>
+                    <option value="Prusa i3 Mk3S [2]">Prusa i3 Mk3S [2]</option>
+                    <option value="Prusa i3 Mk3S [3]">Prusa i3 Mk3S [3]</option>
+                    <option value="Prusa i3 Mk3S [4]">Prusa i3 Mk3S [4]</option>
+                    <option value="Prusa i3 Mk3S [5]">Prusa i3 Mk3S [5]</option>
+                    <option value="Prusa i3 Mk3S [6]">Prusa i3 Mk3S [6]</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-button">Confirm Booking</button>
+        </form>
+    </div>
+
+    <script>
+        const printerForm = document.getElementById("printerForm");
+        const printerSelect = document.getElementById("printer");
+
+        const username = localStorage.getItem("username");
+        const date = localStorage.getItem("dateInput");
+        const startTime = localStorage.getItem("startTime");
+        const endTime = localStorage.getItem("endTime");
+        const dateInput = localStorage.getItem("dateInput"); // Stored value
+
+        // Validate retrieved data
+        if (!username || !date ) {
+            alert("Incomplete booking details. Redirecting to start.");
+            window.location.href = "inputdate.html";
+        }
+
+        // Debugging Logs (Optional)
+        console.log("Retrieved Data:");
+        console.log("Username:", username);
+        console.log("Date:", date);
+        console.log("Start Time:", startTime);
+        console.log("End Time:", endTime);
+        
+        // Function to convert date from yyyy-mm-dd to dd-mm-yyyy
+        function formatDateToDDMMYYYY(date) {
+            const dateObject = new Date(date);
+            return dateObject.toLocaleDateString("en-GB"); // Formats to dd/mm/yyyy
+        }
+
+        // Google Apps Script Web App URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoeW5i6M1cCSDQYtDAWU5SD7B-u9gSAxXk8siA8B-AYtq-bBSvqHPUVrVGMcnci50/exec"; // Replace with your actual script URL
+
+        // Handle form submission and send data to Google Sheet
+        printerForm.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent page refresh on form submission
+
+            const formattedDate = formatDateToDDMMYYYY(date);
+            const printer = printerSelect.value;        
+
+        
+
+        // Gather booking data
+        const bookingData = {
+            username: username, // Include username
+            date: formattedDate, // Use the formatted date
+            startTime: startTime,
+            endTime: endTime,
+            printer: printer,
+        };
+
+        // Log booking data for debugging
+        console.log("Booking Data Sent:", bookingData);
+
+        // Store booking data in localStorage
+        localStorage.setItem("bookingDetails", JSON.stringify(bookingData));
+
+
+        // Send booking data to Google Apps Script Web App
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                mode: "no-cors", // Add this line to bypass the CORS issue
+                body: JSON.stringify(bookingData),
+            });
+
+            alert("Booking successfully submitted!");
+            
+            // Redirect to confirmation page
+            window.location.href = "confirmation.html";
+        } catch (error) {
+            console.error("Error submitting booking:", error);
+            alert("An error occurred while submitting the booking.");
+        }
+    });
+
+        function logout() {
+            localStorage.clear();
+            alert("You have been logged out.");
+        }
+    </script>
+  <a href="index.html" class="logout-button">Log out</a>
+</body>
+</html>
